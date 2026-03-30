@@ -11,7 +11,7 @@
   --coral:#FF6B6B; --yellow:#FFD93D; --mint:#6BCB77;
   --blue:#4D96FF; --pink:#FF6FCF; --cream:#FFF9F0; --dark:#2D2016;
 }
-html,body { min-height:100%; background:var(--cream); font-family:'DM Sans',sans-serif; color:var(--dark); }
+html,body { min-height:100%; min-height:100dvh; background:var(--cream); font-family:'DM Sans',sans-serif; color:var(--dark); }
 
 .confetti-bg { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
 .confetti-dot { position:absolute; border-radius:50%; animation:float linear infinite; }
@@ -180,7 +180,7 @@ textarea { min-height:120px; }
 
 <script>
 const SUPABASE_URL = 'https://pxfwoyvbgnhqytvpcsej.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_VSrX2eLNhx6_PQ8x35Dz7g_Ujao5...'; // REMPLACE PAR TA CLÉ COMPLÈTE
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4ZndveXZiZ25ocXl0dnBjc2VqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4NTU5ODksImV4cCI6MjA5MDQzMTk4OX0.2QKLBvCjFXC-kjXR2SSlNX6ZexBXStLLYlOq9TXrhGE';
 
 // confetti
 (function() {
