@@ -277,6 +277,7 @@ document.getElementById('submit-btn').addEventListener('click', async () => {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'apikey': SUPABASE_KEY,
           'Content-Type': 'image/jpeg',
           'x-upsert': 'true'
         },
