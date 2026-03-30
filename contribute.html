@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Un mot pour Joana 💛</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+:root {
+  --coral:#FF6B6B; --yellow:#FFD93D; --mint:#6BCB77;
+  --blue:#4D96FF; --pink:#FF6FCF; --cream:#FFF9F0; --dark:#2D2016;
+}
+html,body { min-height:100%; background:var(--cream); font-family:'DM Sans',sans-serif; color:var(--dark); }
+
+.confetti-bg { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.confetti-dot { position:absolute; border-radius:50%; animation:float linear infinite; }
+@keyframes float {
+  0% { transform:translateY(110vh) rotate(0deg); opacity:0; }
+  10% { opacity:1; } 90% { opacity:1; }
+  100% { transform:translateY(-10vh) rotate(720deg); opacity:0; }
+}
+
+.container {
+  position:relative; z-index:1;
+  max-width:440px; margin:0 auto;
+  padding:48px 24px 80px;
+  display:flex; flex-direction:column; gap:0;
+}
+
+.header { text-align:center; margin-bottom:40px; }
+.tag {
+  display:inline-block;
+  background:var(--yellow); color:var(--dark);
+  font-size:0.7rem; font-weight:500; letter-spacing:0.12em;
+  text-transform:uppercase; padding:5px 14px; border-radius:20px;
+  margin-bottom:16px;
+}
+.title {
+  font-family:'Fraunces',serif; font-size:2.4rem;
+  font-weight:300; line-height:1.1; color:var(--dark);
+}
+.title em { font-style:italic; color:var(--coral); }
+.subtitle {
+  margin-top:12px; font-size:0.85rem; font-weight:300;
+  color:#888; line-height:1.6;
+}
+
+.form-card {
+  background:white; border-radius:24px;
+  padding:28px 24px;
+  box-shadow:0 4px 30px rgba(0,0,0,0.07);
+}
+
+.field { margin-bottom:20px; }
+label {
+  display:block; font-size:0.72rem; font-weight:500;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:#999; margin-bottom:8px;
+}
+input[type=text], textarea {
+  width:100%; padding:14px 16px;
+  border:1.5px solid #eee; border-radius:14px;
+  font-family:'DM Sans',sans-serif; font-size:0.95rem;
+  font-weight:300; color:var(--dark);
+  background:#fafafa;
+  outline:none; transition:border-color 0.2s, background 0.2s;
+  resize:none;
+}
+input[type=text]:focus, textarea:focus {
+  border-color:var(--pink); background:white;
+}
+textarea { min-height:120px; }
+
+/* photo upload */
+.photo-zone {
+  border:2px dashed #e0e0e0; border-radius:14px;
+  padding:24px 16px; text-align:center;
+  cursor:pointer; transition:border-color 0.2s, background 0.2s;
+  position:relative; overflow:hidden;
+}
+.photo-zone:hover { border-color:var(--pink); background:#fff5fc; }
+.photo-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.photo-icon { font-size:2rem; margin-bottom:8px; display:block; }
+.photo-label { font-size:0.82rem; color:#aaa; font-weight:300; }
+.photo-preview {
+  width:100%; aspect-ratio:4/3; border-radius:10px;
+  object-fit:cover; display:none;
+}
+
+.submit-btn {
+  width:100%; padding:16px;
+  background:var(--dark); color:white;
+  border:none; border-radius:14px;
+  font-family:'DM Sans',sans-serif;
+  font-size:1rem; font-weight:400;
+  cursor:pointer; letter-spacing:0.02em;
+  transition:transform 0.15s, background 0.2s;
+  margin-top:8px;
+}
+.submit-btn:hover { background:#1a0d06; }
+.submit-btn:active { transform:scale(0.98); }
+.submit-btn:disabled { background:#ccc; cursor:not-allowed; }
+
+.progress {
+  height:3px; background:#eee; border-radius:2px; margin-top:12px;
+  overflow:hidden; display:none;
+}
+.progress-bar {
+  height:100%; background:var(--pink);
+  border-radius:2px; width:0%;
+  transition:width 0.3s;
+}
+
+/* success screen */
+.success {
+  display:none; text-align:center;
+  padding:40px 0;
+}
+.success-emoji { font-size:4rem; margin-bottom:20px; display:block; }
+.success-title {
+  font-family:'Fraunces',serif; font-size:2rem;
+  font-weight:300; margin-bottom:12px;
+}
+.success-msg { font-size:0.9rem; color:#888; font-weight:300; line-height:1.7; }
+
+.error-msg {
+  background:#fff0f0; color:#c0392b;
+  border-radius:10px; padding:12px 16px;
+  font-size:0.82rem; margin-top:12px;
+  display:none;
+}
+</style>
+</head>
+<body>
+
+<div class="confetti-bg" id="confetti-bg"></div>
+
+<div class="container">
+  <div class="header">
+    <div class="tag">anniversaire de Joana 🎂</div>
+    <div class="title">Laisse-lui<br>un <em>mot</em></div>
+    <div class="subtitle">Elle le découvrira dans sa carte surprise.<br>Une photo, quelques mots — c'est tout.</div>
+  </div>
+
+  <div class="form-card" id="form-card">
+    <div class="field">
+      <label>Ton prénom</label>
+      <input type="text" id="f-name" placeholder="Marie" maxlength="60"/>
+    </div>
+
+    <div class="field">
+      <label>Ton message</label>
+      <textarea id="f-message" placeholder="Joyeux anniversaire Joana ! Je me souviens de..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Une photo (optionnel)</label>
+      <div class="photo-zone" id="photo-zone">
+        <input type="file" id="f-photo" accept="image/*"/>
+        <img class="photo-preview" id="photo-preview" alt=""/>
+        <div id="photo-placeholder">
+          <span class="photo-icon">📷</span>
+          <div class="photo-label">Appuie pour choisir une photo</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn">Envoyer mon message 💛</button>
+    <div class="progress" id="progress"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <div class="success" id="success">
+    <span class="success-emoji">🎉</span>
+    <div class="success-title">Merci,<br>c'est envoyé !</div>
+    <div class="success-msg">Joana va adorer ton message.<br>Bon anniversaire à elle 🧡</div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://pxfwoyvbgnhqytvpcsej.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_VSrX2eLNhx6_PQ8x35Dz7g_Ujao5...'; // REMPLACE PAR TA CLÉ COMPLÈTE
+
+// confetti
+(function() {
+  const colors = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF6FCF','#C77DFF'];
+  const bg = document.getElementById('confetti-bg');
+  for (let i = 0; i < 14; i++) {
+    const d = document.createElement('div');
+    d.className = 'confetti-dot';
+    const size = 6 + Math.random() * 8;
+    d.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};opacity:${0.12+Math.random()*0.2};animation-duration:${10+Math.random()*14}s;animation-delay:${Math.random()*10}s;`;
+    bg.appendChild(d);
+  }
+})();
+
+// photo preview
+const photoInput = document.getElementById('f-photo');
+photoInput.addEventListener('change', () => {
+  const file = photoInput.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('photo-preview');
+    prev.src = e.target.result;
+    prev.style.display = 'block';
+    document.getElementById('photo-placeholder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+// submit
+document.getElementById('submit-btn').addEventListener('click', async () => {
+  const name = document.getElementById('f-name').value.trim();
+  const message = document.getElementById('f-message').value.trim();
+  const photoFile = photoInput.files[0];
+
+  const errEl = document.getElementById('error-msg');
+  errEl.style.display = 'none';
+
+  if (!name) { showError('Ajoute ton prénom 👋'); return; }
+  if (!message) { showError('Écris quelques mots pour Joana 💬'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Envoi en cours...';
+  showProgress(20);
+
+  try {
+    let photo_url = null;
+
+    // upload photo if present
+    if (photoFile) {
+      showProgress(40);
+      const ext = photoFile.name.split('.').pop();
+      const filename = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+      const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/photos/${filename}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': photoFile.type,
+          'x-upsert': 'true'
+        },
+        body: photoFile
+      });
+      if (!uploadRes.ok) throw new Error('Erreur upload photo');
+      photo_url = `${SUPABASE_URL}/storage/v1/object/public/photos/${filename}`;
+    }
+
+    showProgress(75);
+
+    // insert row
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/contributions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'apikey': SUPABASE_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ name, message, photo_url })
+    });
+
+    if (!res.ok) throw new Error('Erreur base de données');
+
+    showProgress(100);
+    setTimeout(() => {
+      document.getElementById('form-card').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+    }, 400);
+
+  } catch(e) {
+    btn.disabled = false; btn.textContent = 'Envoyer mon message 💛';
+    showError('Une erreur s\'est produite, réessaie.');
+    hideProgress();
+    console.error(e);
+  }
+});
+
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = msg; el.style.display = 'block';
+}
+function showProgress(pct) {
+  document.getElementById('progress').style.display = 'block';
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+function hideProgress() {
+  document.getElementById('progress').style.display = 'none';
+}
+</script>
+</body>
+</html>
